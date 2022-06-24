@@ -29,6 +29,11 @@ public class BlogPostsController {
         return blogPostsService.getAllPosts();
     }
 
+    // get a post by id
+    @GetMapping("/{id}")
+    public BlogPostsDto getPostById(@PathVariable(name = "id") long id) {
+        return blogPostsService.getPostById(id);
+    }
 
 
 }

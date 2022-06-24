@@ -1,6 +1,7 @@
 package com.merlinymy.myblog.service.implementation;
 
 import com.merlinymy.myblog.entity.BlogPosts;
+import com.merlinymy.myblog.exception.ResourceNotFoundException;
 import com.merlinymy.myblog.payload.BlogPostsDto;
 import com.merlinymy.myblog.repository.PostsRepository;
 import com.merlinymy.myblog.service.BlogPostsService;
@@ -41,6 +42,12 @@ public class BlogPostServiceImpl implements BlogPostsService {
     public List<BlogPostsDto> getAllPosts() {
         List<BlogPosts> allPosts = postsRepository.findAll();
         return allPosts.stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public BlogPostsDto getPostById(long id) {
+        BlogPosts onePost = postsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        return mapToDTO(onePost);
     }
 
     private BlogPostsDto mapToDTO(BlogPosts newPost) {

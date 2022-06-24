@@ -8,4 +8,6 @@ public interface BlogPostsService {
     BlogPostsDto createPost(BlogPostsDto blogPostsDto);
 
     List<BlogPostsDto> getAllPosts();
+
+    BlogPostsDto getPostById(long id);
 }
