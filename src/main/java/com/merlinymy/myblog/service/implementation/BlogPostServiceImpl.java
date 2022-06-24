@@ -15,7 +15,9 @@ public class BlogPostServiceImpl implements BlogPostsService {
     private PostsRepository postsRepository;
 
     // constructor injection
-
+    public BlogPostServiceImpl(PostsRepository postsRepository) {
+        this.postsRepository = postsRepository;
+    }
 
     @Override
     public BlogPostsDto createPost(BlogPostsDto blogPostsDto) {
