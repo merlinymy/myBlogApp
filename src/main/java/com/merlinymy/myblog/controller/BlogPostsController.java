@@ -35,5 +35,10 @@ public class BlogPostsController {
         return blogPostsService.getPostById(id);
     }
 
+    @PutMapping("/{id}")
+    public BlogPostsDto updateBlogPostById(@RequestBody BlogPostsDto blogPostsDto, @PathVariable(name = "id") long id) {
+        return blogPostsService.updatePostById(id, blogPostsDto);
+    }
+
 
 }

@@ -50,6 +50,21 @@ public class BlogPostServiceImpl implements BlogPostsService {
         return mapToDTO(onePost);
     }
 
+    @Override
+    public BlogPostsDto updatePostById(long id, BlogPostsDto blogPostsDto) {
+        // pull the post we want to change from the database
+        BlogPosts postToUpdate = postsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+
+        // update to what we have from blogPostsDto (new contents)
+        postToUpdate.setContent(blogPostsDto.getContent());
+        postToUpdate.setTitle(blogPostsDto.getTitle());
+        postToUpdate.setDescription(blogPostsDto.getDescription());
+
+        BlogPosts updatedPost = postsRepository.save(postToUpdate);
+        return mapToDTO(updatedPost);
+
+    }
+
     private BlogPostsDto mapToDTO(BlogPosts newPost) {
         BlogPostsDto postResponse = new BlogPostsDto();
         postResponse.setId(newPost.getId());
