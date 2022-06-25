@@ -14,4 +14,6 @@ public interface BlogPostsService {
 
     // update existing post with id
     BlogPostsDto updatePostById(long id, BlogPostsDto blogPostsDto);
+
+    void deletePostById(long id);
 }

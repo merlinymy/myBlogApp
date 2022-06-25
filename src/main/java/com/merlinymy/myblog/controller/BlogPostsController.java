@@ -1,5 +1,6 @@
 package com.merlinymy.myblog.controller;
 
+import com.merlinymy.myblog.entity.BlogPosts;
 import com.merlinymy.myblog.payload.BlogPostsDto;
 import com.merlinymy.myblog.service.BlogPostsService;
 import com.merlinymy.myblog.service.implementation.BlogPostServiceImpl;
@@ -25,20 +26,26 @@ public class BlogPostsController {
 
     // get all posts api
     @GetMapping
-    public List<BlogPostsDto> getAllPosts() {
-        return blogPostsService.getAllPosts();
+    public ResponseEntity<List<BlogPostsDto>> getAllPosts() {
+        List<BlogPostsDto> allPosts = blogPostsService.getAllPosts();
+        return new ResponseEntity<>(allPosts, allPosts.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
     }
 
     // get a post by id
     @GetMapping("/{id}")
-    public BlogPostsDto getPostById(@PathVariable(name = "id") long id) {
-        return blogPostsService.getPostById(id);
+    public ResponseEntity<BlogPostsDto> getPostById(@PathVariable(name = "id") long id) {
+        return new ResponseEntity<BlogPostsDto>(blogPostsService.getPostById(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public BlogPostsDto updateBlogPostById(@RequestBody BlogPostsDto blogPostsDto, @PathVariable(name = "id") long id) {
-        return blogPostsService.updatePostById(id, blogPostsDto);
+    public ResponseEntity<BlogPostsDto> updateBlogPostById(@RequestBody BlogPostsDto blogPostsDto, @PathVariable(name = "id") long id) {
+        return new ResponseEntity<> (blogPostsService.updatePostById(id, blogPostsDto), HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteBlogPostById(@PathVariable long id) {
+        blogPostsService.deletePostById(id);
+        return new ResponseEntity<>("Post delete successfully.", HttpStatus.OK);
+    }
 
 }

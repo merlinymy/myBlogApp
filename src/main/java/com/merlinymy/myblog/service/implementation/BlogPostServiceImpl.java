@@ -50,6 +50,7 @@ public class BlogPostServiceImpl implements BlogPostsService {
         return mapToDTO(onePost);
     }
 
+    // update post by id
     @Override
     public BlogPostsDto updatePostById(long id, BlogPostsDto blogPostsDto) {
         // pull the post we want to change from the database
@@ -63,6 +64,13 @@ public class BlogPostServiceImpl implements BlogPostsService {
         BlogPosts updatedPost = postsRepository.save(postToUpdate);
         return mapToDTO(updatedPost);
 
+    }
+
+    // delete post by id
+    @Override
+    public void deletePostById(long id) {
+        BlogPosts post = postsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        postsRepository.delete(post);
     }
 
     private BlogPostsDto mapToDTO(BlogPosts newPost) {
