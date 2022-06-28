@@ -2,10 +2,14 @@ package com.merlinymy.myblog.service.implementation;
 
 import com.merlinymy.myblog.entity.BlogPosts;
 import com.merlinymy.myblog.exception.ResourceNotFoundException;
+import com.merlinymy.myblog.payload.BlogPostResponse;
 import com.merlinymy.myblog.payload.BlogPostsDto;
 import com.merlinymy.myblog.repository.PostsRepository;
 import com.merlinymy.myblog.service.BlogPostsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +23,7 @@ public class BlogPostServiceImpl implements BlogPostsService {
     private PostsRepository postsRepository;
 
     // constructor injection
+    @Autowired
     public BlogPostServiceImpl(PostsRepository postsRepository) {
         this.postsRepository = postsRepository;
     }
@@ -39,9 +44,23 @@ public class BlogPostServiceImpl implements BlogPostsService {
     }
 
     @Override
-    public List<BlogPostsDto> getAllPosts() {
-        List<BlogPosts> allPosts = postsRepository.findAll();
-        return allPosts.stream().map(this::mapToDTO).collect(Collectors.toList());
+    public BlogPostResponse getAllPosts(int pageSize, int pageNo) {
+        // create Pageable instance
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<BlogPosts> allPosts = postsRepository.findAll(pageable);
+
+        // get content from page object
+        List<BlogPosts> listOfPosts = allPosts.getContent();
+        List<BlogPostsDto> content =  listOfPosts.stream().map(this::mapToDTO).collect(Collectors.toList());
+
+        BlogPostResponse blogPostResponse = new BlogPostResponse();
+        blogPostResponse.setPageNo(allPosts.getNumber());
+        blogPostResponse.setPageSize(allPosts.getSize());
+        blogPostResponse.setContent(content);
+        blogPostResponse.setTotalElements(allPosts.getTotalElements());
+        blogPostResponse.setTotalPage(allPosts.getTotalPages());
+        blogPostResponse.setLast(allPosts.isLast());
+        return blogPostResponse;
     }
 
     @Override

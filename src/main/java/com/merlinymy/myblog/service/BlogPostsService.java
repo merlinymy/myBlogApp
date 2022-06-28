@@ -1,6 +1,7 @@
 package com.merlinymy.myblog.service;
 
 import com.merlinymy.myblog.entity.BlogPosts;
+import com.merlinymy.myblog.payload.BlogPostResponse;
 import com.merlinymy.myblog.payload.BlogPostsDto;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 public interface BlogPostsService {
     BlogPostsDto createPost(BlogPostsDto blogPostsDto);
 
-    List<BlogPostsDto> getAllPosts();
+    BlogPostResponse getAllPosts(int pageSize, int pageNo);
 
     BlogPostsDto getPostById(long id);
 
