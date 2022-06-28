@@ -42,7 +42,7 @@ public class BlogPostsController {
     // get a post by id
     @GetMapping("/{id}")
     public ResponseEntity<BlogPostsDto> getPostById(@PathVariable(name = "id") long id) {
-        return new ResponseEntity<BlogPostsDto>(blogPostsService.getPostById(id), HttpStatus.OK);
+        return new ResponseEntity<>(blogPostsService.getPostById(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
