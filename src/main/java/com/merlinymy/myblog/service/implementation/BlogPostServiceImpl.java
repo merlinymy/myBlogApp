@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,9 +45,13 @@ public class BlogPostServiceImpl implements BlogPostsService {
     }
 
     @Override
-    public BlogPostResponse getAllPosts(int pageSize, int pageNo) {
+    public BlogPostResponse getAllPosts(int pageSize, int pageNo, String sortBy, String sortMethod) {
+        // sort instance that is dynamic
+        Sort sort = sortMethod.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() :
+                Sort.by(sortBy).descending();
+
         // create Pageable instance
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         Page<BlogPosts> allPosts = postsRepository.findAll(pageable);
 
         // get content from page object
@@ -60,6 +65,7 @@ public class BlogPostServiceImpl implements BlogPostsService {
         blogPostResponse.setTotalElements(allPosts.getTotalElements());
         blogPostResponse.setTotalPage(allPosts.getTotalPages());
         blogPostResponse.setLast(allPosts.isLast());
+        blogPostResponse.setSort(allPosts.getSort());
         return blogPostResponse;
     }
 

@@ -29,9 +29,11 @@ public class BlogPostsController {
     @GetMapping
     public ResponseEntity<BlogPostResponse> getAllPosts(
             @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(value = "sortMethod", defaultValue = "asc", required = false) String sortMethod
     ) {
-        BlogPostResponse allPosts = blogPostsService.getAllPosts(pageSize, pageNo);
+        BlogPostResponse allPosts = blogPostsService.getAllPosts(pageSize, pageNo, sortBy, sortMethod);
         return new ResponseEntity<>(allPosts, HttpStatus.OK);
     }
 
