@@ -4,7 +4,9 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -28,6 +30,8 @@ public class BlogPosts {
     @Column(nullable = false)
     private String content;
     private String description;
+    @OneToMany(mappedBy = "blogPosts", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comments> comments = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
