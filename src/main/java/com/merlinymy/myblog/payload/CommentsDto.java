@@ -9,5 +9,4 @@ public class CommentsDto {
     String content;
     String name;
     String email;
-    private BlogPosts blogPosts;
 }
